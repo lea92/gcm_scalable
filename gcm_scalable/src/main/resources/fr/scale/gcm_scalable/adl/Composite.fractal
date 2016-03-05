@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE definition PUBLIC "-//objectweb.org//DTD Fractal ADL 2.0//EN" "classpath://org/objectweb/proactive/core/component/adl/xml/proactive.dtd">
+
+<definition name="fr.scale.gcm_scalable.adl.Composite">
+  <interface signature="fr.scale.gcm_scalable.Runner" role="server" name="runner"/>
+
+  <!-- TODO: Add the Job Component -->
+  
+  <component name="Slave" definition="fr.scale.gcm_scalable.adl.Slave"/>
+  
+  <component name="Slave2" definition="fr.scale.gcm_scalable.adl.Slave"/>
+  
+  <component name="Job" definition="fr.scale.gcm_scalable.adl.Job"/>
+  
+ 	
+
+  <!-- TODO: Do the bindings -->
+<binding client="this.runner" server="Job.runner"/>
+<binding client="Job.itf1" server="Slave.itf1"/>
+<binding client="Job.itf1" server="Slave2.itf1"/>
+
+  <!-- TODO: Indicates that this component is a composite component -->
+    <controller desc="composite"/>
+</definition>
