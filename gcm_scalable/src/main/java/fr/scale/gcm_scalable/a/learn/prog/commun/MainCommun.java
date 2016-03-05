@@ -1,4 +1,4 @@
-package fr.scale.gcm_scalable.a.learn.commun;
+package fr.scale.gcm_scalable.a.learn.prog.commun;
 
 import java.util.Arrays;
 import java.util.List;

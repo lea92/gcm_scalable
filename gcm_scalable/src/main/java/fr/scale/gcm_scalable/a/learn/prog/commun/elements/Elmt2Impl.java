@@ -1,4 +1,4 @@
-package fr.scale.gcm_scalable.a.learn.commun.elements;
+package fr.scale.gcm_scalable.a.learn.prog.commun.elements;
 
 public class Elmt2Impl implements Itf2{
 

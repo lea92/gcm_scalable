@@ -1,4 +1,4 @@
-package fr.scale.gcm_scalable.a.learn.api.withmembrane;
+package fr.scale.gcm_scalable.a.learn.prog.api.withmembrane;
 
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
@@ -20,17 +20,16 @@ import org.objectweb.proactive.core.component.factory.PAGenericFactory;
 import org.objectweb.proactive.core.component.type.PAGCMInterfaceType;
 import org.objectweb.proactive.core.component.type.PAGCMTypeFactory;
 import org.objectweb.proactive.core.node.Node;
-import org.objectweb.proactive.examples.userguide.components.api.interfaces.Itf2;
-import org.objectweb.proactive.examples.userguide.components.api.interfaces.Itf2Impl;
-
-import fr.scale.gcm_scalable.a.learn.commun.ASameStructure;
-import fr.scale.gcm_scalable.a.learn.commun.CST;
-import fr.scale.gcm_scalable.a.learn.commun.elements.Elmt2Impl;
-import fr.scale.gcm_scalable.a.learn.commun.elements.Itf1;
-import fr.scale.gcm_scalable.a.learn.commun.elements.ItfMulticast;
-import fr.scale.gcm_scalable.a.learn.commun.elements.MasterImpl;
-import fr.scale.gcm_scalable.a.learn.commun.elements.Runner;
-import fr.scale.gcm_scalable.a.learn.commun.elements.SlaveImpl;
+import fr.scale.gcm_scalable.a.learn.prog.commun.ASameStructure;
+import fr.scale.gcm_scalable.a.learn.prog.commun.CST;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.Elmt2Impl;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.Itf1;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.ItfMulticast;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.MasterImpl;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.NoFCImpl;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.NoFCItf;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.Runner;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.SlaveImpl;
 
 public class WithMembraneStructure extends ASameStructure{
 
@@ -92,15 +91,15 @@ public class WithMembraneStructure extends ASameStructure{
 	protected static Component notfonc(PAGCMTypeFactory patf, PAGenericFactory pagf, Node node) {
 		try {
 			InterfaceType[] itfType = new InterfaceType[] {
-					patf.createGCMItfType("i2", Itf2.class.getName(), TypeFactory.SERVER, TypeFactory.OPTIONAL, PAGCMTypeFactory.SINGLETON_CARDINALITY),
+					patf.createGCMItfType("nofci1", NoFCItf.class.getName(), TypeFactory.SERVER, TypeFactory.OPTIONAL, PAGCMTypeFactory.SINGLETON_CARDINALITY),
 			};
 
 			ComponentType t = patf.createFcType(itfType);
 
 			return pagf.newNfFcInstance(t, 
-					new ControllerDescription("i2", 
+					new ControllerDescription("nofci1", 
 							Constants.PRIMITIVE, COMPONENT_CONTROLLER_CONFIG), 
-					new ContentDescription(Itf2Impl.class.getName()), node);
+					new ContentDescription(NoFCImpl.class.getName()), node);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 			return null;
@@ -118,7 +117,7 @@ public class WithMembraneStructure extends ASameStructure{
 					(new PAGCMInterfaceType[] {
 							(PAGCMInterfaceType) tf.createGCMItfType(MasterImpl.ITF_CLIENT_M, ItfMulticast.class.getName(), CST.CLI, CST.MND, CST.MC),
 							(PAGCMInterfaceType) tf.createGCMItfType("runner", Runner.class.getName(), CST.SRV, CST.MND,CST.SC),
-							(PAGCMInterfaceType) tf.createGCMItfType(MasterImpl.ITF_CLIENT_2, fr.scale.gcm_scalable.a.learn.commun.elements.Itf2.class.getName(), CST.CLI, CST.MND, CST.SC),
+							(PAGCMInterfaceType) tf.createGCMItfType(MasterImpl.ITF_CLIENT_2, fr.scale.gcm_scalable.a.learn.prog.commun.elements.Itf2.class.getName(), CST.CLI, CST.MND, CST.SC),
 					});
 			master = gf.newFcInstance(tMaster, new ControllerDescription("slave", Constants.PRIMITIVE),
 					MasterImpl.class.getName());
@@ -162,7 +161,7 @@ public class WithMembraneStructure extends ASameStructure{
 		Component slave = null;
 		try {
 			tSlave = tf.createFcType(new InterfaceType[] { 
-					tf.createFcItfType(MasterImpl.ITF_CLIENT_2, fr.scale.gcm_scalable.a.learn.commun.elements.Itf2.class
+					tf.createFcItfType(MasterImpl.ITF_CLIENT_2, fr.scale.gcm_scalable.a.learn.prog.commun.elements.Itf2.class
 					.getName(), TypeFactory.SERVER, TypeFactory.MANDATORY, TypeFactory.SINGLE) });
 			slave = gf.newFcInstance(tSlave, new ControllerDescription("elm2", Constants.PRIMITIVE),
 					Elmt2Impl.class.getName());

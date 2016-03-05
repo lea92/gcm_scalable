@@ -34,7 +34,7 @@
  * ################################################################
  * $$PROACTIVE_INITIAL_DEV$$
  */
-package fr.scale.gcm_scalable.a.learn.commun.elements;
+package fr.scale.gcm_scalable.a.learn.prog.commun.elements;
 
 import java.util.List;
 

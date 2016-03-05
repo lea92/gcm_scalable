@@ -34,7 +34,7 @@
  * ################################################################
  * $$PROACTIVE_INITIAL_DEV$$
  */
-package fr.scale.gcm_scalable.a.learn.commun.elements;
+package fr.scale.gcm_scalable.a.learn.prog.commun.elements;
 
 import java.util.List;
 
@@ -42,6 +42,8 @@ import java.util.List;
 /**
  * @author The ProActive Team
  */
-public interface Itf1 {
-    void compute(List<String> arg);
+public interface Runner {
+    public void run(List<String> arg);
+    
+    public void run2(String str);
 }

@@ -68,7 +68,7 @@ import org.objectweb.proactive.extra.component.fscript.model.GCMNodeFactory;
 
 import examples.services.Service;
 import examples.services.performance.PSCST;
-import fr.scale.gcm_scalable.a.learn.commun.MainCommun;
+import fr.scale.gcm_scalable.a.learn.prog.commun.MainCommun;
 import fr.scale.gcm_scalable.commun.CST;
 import fr.scale.gcm_scalable.controller.factory.AutonomousCompositeScalable;
 import fr.scale.gcm_scalable.controller.interfaces.IService;

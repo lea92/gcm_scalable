@@ -34,7 +34,7 @@
  * ################################################################
  * $$PROACTIVE_INITIAL_DEV$$
  */
-package fr.scale.gcm_scalable.a.learn.api.withmape;
+package fr.scale.gcm_scalable.a.learn.prog.api.withmape;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,13 +74,13 @@ import examples.services.autoadaptable.AASCST;
 import examples.services.autoadaptable.components.MasterAttributes;
 import examples.services.autoadaptable.components.SlaveMulticast;
 import examples.services.autoadaptable.components.Solver;
-import fr.scale.gcm_scalable.a.learn.commun.CST;
-import fr.scale.gcm_scalable.a.learn.commun.MainCommun;
-import fr.scale.gcm_scalable.a.learn.commun.elements.Itf1;
-import fr.scale.gcm_scalable.a.learn.commun.elements.ItfMulticast;
-import fr.scale.gcm_scalable.a.learn.commun.elements.MasterImpl;
-import fr.scale.gcm_scalable.a.learn.commun.elements.Runner;
-import fr.scale.gcm_scalable.a.learn.commun.elements.SlaveImpl;
+import fr.scale.gcm_scalable.a.learn.prog.commun.CST;
+import fr.scale.gcm_scalable.a.learn.prog.commun.MainCommun;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.Itf1;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.ItfMulticast;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.MasterImpl;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.Runner;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.SlaveImpl;
 
 
 
@@ -98,78 +98,7 @@ public class Main extends MainCommun{
         PAGenericFactory gf = Utils.getPAGenericFactory(boot);
         
         MapeStructure struct = new MapeStructure();
-        
-        //TestAAS
-        // creation d'un composite
-        Component composite = struct.createComposite();
-           
-
-		//Create the Slave Component 
-		Component slave  = struct.createSlave1();
-		Component slave2 = struct.createSlave2();
-		Component elmt2 = struct.createElmt2();
-		
-		// Create the Master Multicast
-		Component master = struct.createMasterMulticast();
-		
-        // TODO: Add slave and master components to the composite component
-        PAContentController pacc = Utils.getPAContentController(composite);
-        
-        pacc.addFcSubComponent(master);
-        pacc.addFcSubComponent(slave);
-        pacc.addFcSubComponent(slave2);
-        pacc.addFcSubComponent(elmt2);
-        
-        // TODO: Do the bindings
-        PABindingController pabc = Utils.getPABindingController(composite);
-        pabc.bindFc("runner", master.getFcInterface("runner"));
-        PABindingController pbmaster = Utils.getPABindingController(master);
-        //pbmaster.bindFc(MasterImpl.ITF_CLIENT_M, slave.getFcInterface("i1"));
-        //System.out.println(Utils.getPABindingController(master).lookupFc("im1"));
-        Object[] it = Utils.getPABindingController(master).listFc();
-       
-		for(Object i : it){
-        	System.out.println(">> " + i);
-        }
-		slave.getFcInterface("i1");
-		Utils.getPABindingController(master).bindFc(MasterImpl.ITF_CLIENT_2,elmt2.getFcInterface(MasterImpl.ITF_CLIENT_2));
-        
-        Utils.getPAMulticastController(master).bindGCMMulticast(MasterImpl.ITF_CLIENT_M, slave.getFcInterface("i1"));
-        Utils.getPAMulticastController(master).bindGCMMulticast(MasterImpl.ITF_CLIENT_M, slave2.getFcInterface("i1"));
-        
-        struct.start(composite);
-        
-        System.out.println("start");
-        {
-        Runner runner = (Runner) composite.getFcInterface("runner");
-        List<String> arg = new ArrayList<String>();
-        arg.add("hello");
-        arg.add("world");
-        runner.run(arg);
-        }
-        
-
-        System.out.println("stop");
-        
-        PAMembraneController membrane = Utils.getPAMembraneController(master);
-		PAGCMLifeCycleController lifeCycle = 
-				Utils.getPAGCMLifeCycleController(master);
-		States oldStates = Remmos.stopMembraneAndLifeCycle(membrane, lifeCycle);
-		Thread.sleep(1000);
-		Remmos.startMembraneAndLifeCycle(oldStates, membrane, lifeCycle);
-		
-
-        System.out.println("start 2");
-        {
-            Runner runner = (Runner) composite.getFcInterface("runner");
-            List<String> arg = new ArrayList<String>();
-            arg.add("hello2");
-            arg.add("world2");
-            runner.run(arg);
-            }
-        
-        Thread.sleep(10000);
-        System.exit(0);
+        struct.run();
     }
     
 }

@@ -1,4 +1,4 @@
-package fr.scale.gcm_scalable.a.learn.commun;
+package fr.scale.gcm_scalable.a.learn.prog.commun;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,8 @@ import org.objectweb.proactive.core.component.Utils;
 import org.objectweb.proactive.core.component.control.PABindingController;
 import org.objectweb.proactive.core.component.control.PAContentController;
 
-import fr.scale.gcm_scalable.a.learn.commun.elements.MasterImpl;
-import fr.scale.gcm_scalable.a.learn.commun.elements.Runner;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.MasterImpl;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.Runner;
 
 public abstract class ASameStructure implements ISameStructure{
 

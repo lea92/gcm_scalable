@@ -1,4 +1,4 @@
-package fr.scale.gcm_scalable.a.learn.noadl.withmembranel;
+package fr.scale.gcm_scalable.a.learn.prog.adl.withmape;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,8 @@ import org.objectweb.proactive.extra.component.fscript.GCMScript;
 import org.objectweb.proactive.extra.component.fscript.model.GCMNodeFactory;
 
 import fr.scale.gcm_scalable.a.learn.adl.AFactoryFactory;
-import fr.scale.gcm_scalable.a.learn.commun.MainCommun;
+import fr.scale.gcm_scalable.a.learn.prog.commun.CST;
+import fr.scale.gcm_scalable.a.learn.prog.commun.MainCommun;
 
 // I want to create a composite with membrane
 
@@ -90,12 +91,12 @@ public class Main extends MainCommun{
 
 		Thread.sleep(1000);
 
-		log("Demande 1");
+		CST.log("Demande 1");
 		test(composite,"test 1");
 
 		Utils.getPAMembraneController(composite).stopMembrane();
 
-		log("Demande 2 apres stop membrane");
+		CST.log("Demande 2 apres stop membrane");
 
 		test(composite,"test 2");
 		
@@ -103,12 +104,12 @@ public class Main extends MainCommun{
 		Component master = null;
 		
 
-		log("Stop life cycle");
+		CST.log("Stop life cycle");
 
 		Utils.getPAGCMLifeCycleController(composite).stopFc();
 		Thread.sleep(1000);
 
-		log("Start life cycle + membrane");
+		CST.log("Start life cycle + membrane");
 
 		Utils.getPAMembraneController(composite).startMembrane();
 		Thread.sleep(1000);

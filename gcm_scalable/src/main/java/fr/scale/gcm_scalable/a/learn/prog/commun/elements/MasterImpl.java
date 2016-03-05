@@ -34,7 +34,7 @@
  * ################################################################
  * $$PROACTIVE_INITIAL_DEV$$
  */
-package fr.scale.gcm_scalable.a.learn.commun.elements;
+package fr.scale.gcm_scalable.a.learn.prog.commun.elements;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class MasterImpl implements Runner, BindingController {
    // private Itf1 i1;
     private ItfMulticast im1;
     
-    private fr.scale.gcm_scalable.a.learn.commun.elements.Itf2 i2;
+    private fr.scale.gcm_scalable.a.learn.prog.commun.elements.Itf2 i2;
 
     public void run(List<String> arg) {
         im1.compute(arg);
