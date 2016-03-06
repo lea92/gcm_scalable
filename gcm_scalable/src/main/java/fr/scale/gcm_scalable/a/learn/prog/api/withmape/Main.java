@@ -37,50 +37,22 @@
 package fr.scale.gcm_scalable.a.learn.prog.api.withmape;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.etsi.uri.gcm.api.type.GCMTypeFactory;
-import org.etsi.uri.gcm.util.GCM;
 import org.objectweb.fractal.api.Component;
-import org.objectweb.fractal.api.control.BindingController;
-import org.objectweb.fractal.api.control.ContentController;
-import org.objectweb.fractal.api.control.NameController;
-import org.objectweb.fractal.api.factory.GenericFactory;
-import org.objectweb.fractal.api.factory.InstantiationException;
-import org.objectweb.fractal.api.type.ComponentType;
-import org.objectweb.fractal.api.type.InterfaceType;
-import org.objectweb.fractal.api.type.TypeFactory;
-import org.objectweb.proactive.core.component.Constants;
-import org.objectweb.proactive.core.component.ContentDescription;
-import org.objectweb.proactive.core.component.ControllerDescription;
 import org.objectweb.proactive.core.component.Utils;
-import org.objectweb.proactive.core.component.adl.FactoryFactory;
 import org.objectweb.proactive.core.component.control.PABindingController;
 import org.objectweb.proactive.core.component.control.PAContentController;
 import org.objectweb.proactive.core.component.control.PAGCMLifeCycleController;
-import org.objectweb.proactive.core.component.control.PAInterceptorController;
 import org.objectweb.proactive.core.component.control.PAMembraneController;
 import org.objectweb.proactive.core.component.factory.PAGenericFactory;
-import org.objectweb.proactive.core.component.type.PAGCMInterfaceType;
 import org.objectweb.proactive.core.component.type.PAGCMTypeFactory;
-import org.objectweb.proactive.core.node.Node;
-import org.objectweb.proactive.examples.userguide.components.api.interfaces.Itf2;
-import org.objectweb.proactive.examples.userguide.components.api.interfaces.Itf2Impl;
 import org.objectweb.proactive.extensions.autonomic.controllers.remmos.Remmos;
 import org.objectweb.proactive.extensions.autonomic.controllers.remmos.Remmos.States;
 
-import examples.services.autoadaptable.AASCST;
-import examples.services.autoadaptable.components.MasterAttributes;
-import examples.services.autoadaptable.components.SlaveMulticast;
-import examples.services.autoadaptable.components.Solver;
-import fr.scale.gcm_scalable.a.learn.prog.commun.CST;
 import fr.scale.gcm_scalable.a.learn.prog.commun.MainCommun;
-import fr.scale.gcm_scalable.a.learn.prog.commun.elements.Itf1;
-import fr.scale.gcm_scalable.a.learn.prog.commun.elements.ItfMulticast;
 import fr.scale.gcm_scalable.a.learn.prog.commun.elements.MasterImpl;
 import fr.scale.gcm_scalable.a.learn.prog.commun.elements.Runner;
-import fr.scale.gcm_scalable.a.learn.prog.commun.elements.SlaveImpl;
 
 
 
@@ -90,13 +62,8 @@ import fr.scale.gcm_scalable.a.learn.prog.commun.elements.SlaveImpl;
  */
 public class Main extends MainCommun{
 	
-
-	
     public static void main(String[] args) throws Exception {
-        Component boot = Utils.getBootstrapComponent();
-        PAGCMTypeFactory tf = Utils.getPAGCMTypeFactory(boot);
-        PAGenericFactory gf = Utils.getPAGenericFactory(boot);
-        
+    	System.out.println("MAPE With API");
         MapeStructure struct = new MapeStructure();
         struct.run();
     }

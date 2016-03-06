@@ -1,4 +1,4 @@
-package fr.scale.gcm_scalable.a.learn.prog.adl.withmembrane;
+package fr.scale.gcm_scalable.a.learn.prog.adl.nomembrane;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,8 +38,8 @@ public class Main extends MainCommun{
 	public static void runwithoutunomic(String[] args) throws Exception {
 		//main1(args);
 		
-		System.out.println("Main with adl with membrane");
-		MembStruct struct = new MembStruct();
+		System.out.println("Main with adl no membrane");
+		NoMembStruct struct = new NoMembStruct();
 		struct.run();
 	}
 

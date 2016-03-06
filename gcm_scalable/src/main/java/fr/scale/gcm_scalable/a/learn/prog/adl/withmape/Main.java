@@ -1,173 +1,74 @@
+/*
+ * ################################################################
+ *
+ * ProActive Parallel Suite(TM): The Java(TM) library for
+ *    Parallel, Distributed, Multi-Core Computing for
+ *    Enterprise Grids & Clouds
+ *
+ * Copyright (C) 1997-2012 INRIA/University of
+ *                 Nice-Sophia Antipolis/ActiveEon
+ * Contact: proactive@ow2.org or contact@activeeon.com
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation; version 3 of
+ * the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+ * USA
+ *
+ * If needed, contact us to obtain a release under GPL Version 2 or 3
+ * or a different license than the AGPL.
+ *
+ *  Initial developer(s):               The ProActive Team
+ *                        http://proactive.inria.fr/team_members.htm
+ *  Contributor(s):
+ *
+ * ################################################################
+ * $$PROACTIVE_INITIAL_DEV$$
+ */
 package fr.scale.gcm_scalable.a.learn.prog.adl.withmape;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.etsi.uri.gcm.api.type.GCMTypeFactory;
-import org.etsi.uri.gcm.util.GCM;
-import org.objectweb.fractal.adl.Factory;
 import org.objectweb.fractal.api.Component;
-import org.objectweb.fractal.api.Interface;
-import org.objectweb.fractal.api.factory.GenericFactory;
-import org.objectweb.fractal.fscript.FScript;
-import org.objectweb.fractal.fscript.FScriptEngine;
-import org.objectweb.fractal.fscript.ScriptLoader;
 import org.objectweb.proactive.core.component.Utils;
-import org.objectweb.proactive.core.component.adl.FactoryFactory;
+import org.objectweb.proactive.core.component.control.PABindingController;
+import org.objectweb.proactive.core.component.control.PAContentController;
+import org.objectweb.proactive.core.component.control.PAGCMLifeCycleController;
+import org.objectweb.proactive.core.component.control.PAMembraneController;
 import org.objectweb.proactive.core.component.factory.PAGenericFactory;
 import org.objectweb.proactive.core.component.type.PAGCMTypeFactory;
-import org.objectweb.proactive.extensions.autonomic.adl.ABasicFactory;
-import org.objectweb.proactive.extensions.autonomic.controllers.execution.ExecutorControllerImpl;
-import org.objectweb.proactive.extra.component.fscript.GCMScript;
-import org.objectweb.proactive.extra.component.fscript.model.GCMNodeFactory;
+import org.objectweb.proactive.extensions.autonomic.controllers.remmos.Remmos;
+import org.objectweb.proactive.extensions.autonomic.controllers.remmos.Remmos.States;
 
-import fr.scale.gcm_scalable.a.learn.adl.AFactoryFactory;
 import fr.scale.gcm_scalable.a.learn.prog.commun.CST;
 import fr.scale.gcm_scalable.a.learn.prog.commun.MainCommun;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.MasterImpl;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.Runner;
 
-// I want to create a composite with membrane
 
-//-Djava.security.manager -Djava.security.policy=/Users/lelbeze/Desktop/allPerm.policy  -Dgcm.provider=org.objectweb.proactive.core.component.Fractive
+
+/**
+ * -Djava.security.manager -Djava.security.policy=/Users/lelbeze/Desktop/allPerm.policy  -Dgcm.provider=org.objectweb.proactive.core.component.Fractive
+ * @author The ProActive Team
+ */
 public class Main extends MainCommun{
-
-	/**
-	 * I want just see if without autonomic I can start/stop bind and unbind. And if it's work
-	 * @param args
-	 * @throws Exception
-	 */
-	public static void runwithoutunomic(String[] args) throws Exception {
-		//main1(args);
-
-		System.out.println("Main");
-		PAGCMTypeFactory typeFactory;
-		Factory factory = AFactoryFactory.getAFactory();
-		Component boot = Utils.getBootstrapComponent();
-        PAGCMTypeFactory tf = Utils.getPAGCMTypeFactory(boot);
-        PAGenericFactory gf = Utils.getPAGenericFactory(boot);
-
-		
-		final String adl = "fr.scale.gcm.scalable.simple.masterslave.adl.Composite";
-		Map<String, Object> context = new HashMap<String, Object>();
-		Component composite = (Component) factory.newComponent(
-				adl, context);
-
-
-		String defaultFcProvider = System.getProperty("fractal.provider");
-		System.setProperty("fractal.provider", "org.objectweb.fractal.julia.Julia");
-		Component gcmScript = GCMScript.newEngineFromAdl(ExecutorControllerImpl.AGCMSCRIPT_ADL);
-		ScriptLoader loader = FScript.getScriptLoader(gcmScript);
-		FScriptEngine engine = FScript.getFScriptEngine(gcmScript);
-		engine.setGlobalVariable("this", ((GCMNodeFactory) FScript.getNodeFactory(gcmScript))
-				.createGCMComponentNode(composite));
-
-		if(defaultFcProvider !=null) System.setProperty("fractal.provider", defaultFcProvider);
-
-		// engine.execute("unbind(bindings-to($this/Master/itf1));");
-		/*{
-        	Object result = engine.execute("$this");
-        	 System.out.println(result);
-        }
-        {
-        	Object result = engine.execute("$this/descendant::Slave/interface::itf1)");
-        	engine.setGlobalVariable("slave", result);
-        	Object result2 = engine.execute("$slave");
-
-        	 System.out.println(result2);
-        }
-
-        {
-        	Object result = engine.execute("unbind(bindings-to($this/descendant::Slave/interface::itf1))");
-        	 System.out.println(result);
-        }
-
-		 */
-		
-		{
-	        //Utils.getPAMembraneController(composite).nfAddFcSubComponent(notfonc(tf,gf,null));
-		}
-		Utils.getPAGCMLifeCycleController(composite).startFc();
-		
-		Utils.getPAMembraneController(composite).startMembrane();
-
-		Thread.sleep(1000);
-
-		CST.log("Demande 1");
-		test(composite,"test 1");
-
-		Utils.getPAMembraneController(composite).stopMembrane();
-
-		CST.log("Demande 2 apres stop membrane");
-
-		test(composite,"test 2");
-		
-		Component slave = null;
-		Component master = null;
-		
-
-		CST.log("Stop life cycle");
-
-		Utils.getPAGCMLifeCycleController(composite).stopFc();
-		Thread.sleep(1000);
-
-		CST.log("Start life cycle + membrane");
-
-		Utils.getPAMembraneController(composite).startMembrane();
-		Thread.sleep(1000);
-		
-		Utils.getPAGCMLifeCycleController(composite).startFc();
-		Thread.sleep(1000);
-		
-		
-		test(composite,"test 3");
-		
-		for(Component ca : GCM.getContentController(composite).getFcSubComponents()){
-			String name = GCM.getNameController(ca).getFcName();
-			if(name.equals("Slave")){
-				slave = ca;
-			}
-			if(name.equals("Master")){
-				master = ca;
-			}
-		};
-
-		//Component slave2 = createSlave("Slave2");
-
-		//                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          vjuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuk;,,,,,,,,,,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	GCM.getContentController(composite).addFcSubComponent(slave2);
-		//                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          vjuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuk;,,,,,,,,,,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	GCM.getContentController(composite).addFcSubComponent(slave2);
-		//	GCM.getBindingController(master).bindFc("itf1",slave2.getFcInterface("itf1"));
-
-		GCM.getGCMLifeCycleController(composite).startFc();
-		Thread.sleep(1000);
-		System.out.println(Utils.getPABindingController(master).isBoundTo(slave));
-		for(Object o : master.getFcInterfaces()){
-			Interface i = (Interface) o;
-			System.out.println(">>>>"+i.getFcItfName());
-		}
-
-
-		System.out.println(">>>> UNBIND AND REBIND");
-		GCM.getGCMLifeCycleController(master).stopFc();
-		Utils.getPAMulticastController(master).unbindGCMMulticast("itf1", "itf1");		
-		Utils.getPABindingController(master).bindFc("itf1",slave.getFcInterface("itf1"));
-		GCM.getGCMLifeCycleController(master).startFc();
-
-		System.out.println("master is it binded to slave ?"+ Utils.getPABindingController(master).isBoundTo(slave));
-
-		Thread.sleep(1000);
-		test(composite,"test unbind and rebind");
-
-		GCM.getGCMLifeCycleController(composite).stopFc();
-
-		System.exit(0);
-	}
-
 	
-	public static void main(String[] args) {
-		try {
-			runwithoutunomic(args);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+    public static void main(String[] args) throws Exception {
+    	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    	System.out.println("ADL with mape");
+        MapeStructureADL struct = new MapeStructureADL();
+        struct.run();
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    }
+    
 }

@@ -7,7 +7,7 @@ import org.objectweb.fractal.adl.Factory;
 import org.objectweb.proactive.core.component.adl.FactoryFactory;
 
 
-public class AFactoryFactory {
+public class MyFactoryFactory {
 
     public final static String AUTONOMIC_FACTORY = "fr.scale.gcm_scalable.a.learn.adl.AFactory";
 

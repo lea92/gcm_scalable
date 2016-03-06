@@ -2,6 +2,7 @@ package fr.scale.gcm_scalable.a.learn.prog.api.withmembrane;
 
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
+import org.objectweb.fractal.api.Type;
 import org.objectweb.fractal.api.control.IllegalLifeCycleException;
 import org.objectweb.fractal.api.control.NameController;
 import org.objectweb.fractal.api.factory.InstantiationException;
@@ -17,6 +18,7 @@ import org.objectweb.proactive.core.component.control.PAGCMLifeCycleController;
 import org.objectweb.proactive.core.component.control.PAInterceptorController;
 import org.objectweb.proactive.core.component.control.PAMembraneController;
 import org.objectweb.proactive.core.component.factory.PAGenericFactory;
+import org.objectweb.proactive.core.component.identity.PAComponent;
 import org.objectweb.proactive.core.component.type.PAGCMInterfaceType;
 import org.objectweb.proactive.core.component.type.PAGCMTypeFactory;
 import org.objectweb.proactive.core.node.Node;
@@ -36,12 +38,28 @@ public class WithMembraneStructure extends ASameStructure{
 	PAGCMTypeFactory tf;
 	PAGenericFactory gf;
 
+	InterfaceType[] nfItfTypes ;
+
 	public WithMembraneStructure(){
 		Component boot;
 		try {
 			boot = Utils.getBootstrapComponent();
 			tf = Utils.getPAGCMTypeFactory(boot);
 			gf = Utils.getPAGenericFactory(boot);
+			nfItfTypes = new InterfaceType[] {
+					tf.createFcItfType(Constants.BINDING_CONTROLLER, PABindingController.class
+							.getName(), TypeFactory.SERVER, TypeFactory.MANDATORY, TypeFactory.SINGLE),
+					tf.createFcItfType(Constants.LIFECYCLE_CONTROLLER,
+							PAGCMLifeCycleController.class.getName(), TypeFactory.SERVER, TypeFactory.MANDATORY,
+							TypeFactory.SINGLE),
+					tf.createFcItfType(Constants.NAME_CONTROLLER, NameController.class.getName(),
+							TypeFactory.SERVER, TypeFactory.MANDATORY, TypeFactory.SINGLE),
+					tf.createFcItfType(Constants.MEMBRANE_CONTROLLER, PAMembraneController.class
+							.getName(), TypeFactory.SERVER, TypeFactory.MANDATORY, TypeFactory.SINGLE),
+					tf.createFcItfType(Constants.INTERCEPTOR_CONTROLLER,
+							PAInterceptorController.class.getName(), TypeFactory.SERVER, TypeFactory.MANDATORY,
+							TypeFactory.SINGLE)
+			};
 
 		} catch (InstantiationException e) {
 			e.printStackTrace();
@@ -56,20 +74,6 @@ public class WithMembraneStructure extends ASameStructure{
 	@Override
 	public Component createComposite() {
 		try{
-			InterfaceType[] nfItfTypes = new InterfaceType[] {
-					tf.createFcItfType(Constants.BINDING_CONTROLLER, PABindingController.class
-							.getName(), TypeFactory.SERVER, TypeFactory.MANDATORY, TypeFactory.SINGLE),
-					tf.createFcItfType(Constants.LIFECYCLE_CONTROLLER,
-							PAGCMLifeCycleController.class.getName(), TypeFactory.SERVER, TypeFactory.MANDATORY,
-							TypeFactory.SINGLE),
-					tf.createFcItfType(Constants.NAME_CONTROLLER, NameController.class.getName(),
-							TypeFactory.SERVER, TypeFactory.MANDATORY, TypeFactory.SINGLE),
-					tf.createFcItfType(Constants.MEMBRANE_CONTROLLER, PAMembraneController.class
-							.getName(), TypeFactory.SERVER, TypeFactory.MANDATORY, TypeFactory.SINGLE),
-					tf.createFcItfType(Constants.INTERCEPTOR_CONTROLLER,
-							PAInterceptorController.class.getName(), TypeFactory.SERVER, TypeFactory.MANDATORY,
-							TypeFactory.SINGLE)
-			};
 
 			ComponentType tComposite = tf.createFcType(new InterfaceType[] { tf.createFcItfType("runner",
 					Runner.class.getName(), TypeFactory.SERVER, TypeFactory.MANDATORY, TypeFactory.SINGLE) },nfItfTypes);
@@ -118,9 +122,10 @@ public class WithMembraneStructure extends ASameStructure{
 							(PAGCMInterfaceType) tf.createGCMItfType(MasterImpl.ITF_CLIENT_M, ItfMulticast.class.getName(), CST.CLI, CST.MND, CST.MC),
 							(PAGCMInterfaceType) tf.createGCMItfType("runner", Runner.class.getName(), CST.SRV, CST.MND,CST.SC),
 							(PAGCMInterfaceType) tf.createGCMItfType(MasterImpl.ITF_CLIENT_2, fr.scale.gcm_scalable.a.learn.prog.commun.elements.Itf2.class.getName(), CST.CLI, CST.MND, CST.SC),
-					});
+					},nfItfTypes);
 			master = gf.newFcInstance(tMaster, new ControllerDescription("slave", Constants.PRIMITIVE),
 					MasterImpl.class.getName());
+			Utils.getPAMembraneController(master).startMembrane();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -143,8 +148,9 @@ public class WithMembraneStructure extends ASameStructure{
 		ComponentType tSlave;
 		Component slave = null;
 		try {
-			tSlave = tf.createFcType(new InterfaceType[] { tf.createFcItfType("i1", Itf1.class
-					.getName(), TypeFactory.SERVER, TypeFactory.MANDATORY, TypeFactory.SINGLE) });
+			tSlave = tf.createFcType
+					(new PAGCMInterfaceType[]  { (PAGCMInterfaceType) tf.createGCMItfType("i1", Itf1.class
+							.getName(), CST.SRV, CST.MND, CST.SC) },nfItfTypes);
 			slave = gf.newFcInstance(tSlave, new ControllerDescription("slave", Constants.PRIMITIVE),
 					SlaveImpl.class.getName());
 		} catch (InstantiationException e) {
@@ -160,11 +166,13 @@ public class WithMembraneStructure extends ASameStructure{
 		ComponentType tSlave;
 		Component slave = null;
 		try {
-			tSlave = tf.createFcType(new InterfaceType[] { 
-					tf.createFcItfType(MasterImpl.ITF_CLIENT_2, fr.scale.gcm_scalable.a.learn.prog.commun.elements.Itf2.class
-					.getName(), TypeFactory.SERVER, TypeFactory.MANDATORY, TypeFactory.SINGLE) });
+
+			tSlave = tf.createFcType
+					(new PAGCMInterfaceType[]  { (PAGCMInterfaceType) tf.createGCMItfType(MasterImpl.ITF_CLIENT_2, fr.scale.gcm_scalable.a.learn.prog.commun.elements.Itf2.class
+							.getName(), CST.SRV, CST.MND, CST.SC) },nfItfTypes);
 			slave = gf.newFcInstance(tSlave, new ControllerDescription("elm2", Constants.PRIMITIVE),
 					Elmt2Impl.class.getName());
+
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		}
@@ -174,12 +182,18 @@ public class WithMembraneStructure extends ASameStructure{
 
 
 	@Override
-	public void start(Component composite) {
+	public void start(Component comp) {
 		try {
-			CST.log("start membrane");    
-
+			CST.log("start all ");    
+			PAComponent composite = (PAComponent) comp;
 			Utils.getPAMembraneController(composite).startMembrane();
+			Type type = composite.getFcType();
 
+			if(composite.getComponentParameters().getHierarchicalType().equals(Constants.COMPOSITE)){
+				for( Component sub : Utils.getPAContentController(composite).getFcSubComponents()){
+					Utils.getPAMembraneController(sub).startMembrane();
+				}
+			}
 			CST.log("start");     
 			Utils.getPAGCMLifeCycleController(composite).startFc();
 		} catch (IllegalLifeCycleException e) {
@@ -193,10 +207,17 @@ public class WithMembraneStructure extends ASameStructure{
 
 
 	@Override
-	public void stop(Component composite) {
+	public void stop(Component comp) {
 		try {
+
+			PAComponent composite = (PAComponent) comp;
 			System.out.println("stopmb");    
 			Utils.getPAMembraneController(composite).stopMembrane();
+			if(composite.getComponentParameters().getHierarchicalType().equals(Constants.COMPOSITE)){
+				for( Component sub : Utils.getPAContentController(composite).getFcSubComponents()){
+					Utils.getPAMembraneController(sub).stopMembrane();
+				}
+			}
 			System.out.println("stop");     
 			Utils.getPAGCMLifeCycleController(composite).stopFc();
 		} catch (IllegalLifeCycleException e) {
@@ -206,5 +227,21 @@ public class WithMembraneStructure extends ASameStructure{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+
+	@Override
+	public void stopstart(Component composite) {
+		stop(composite);
+		try {
+			Thread.sleep(1000);
+		
+		start(composite);
+
+		Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
 	}
 }

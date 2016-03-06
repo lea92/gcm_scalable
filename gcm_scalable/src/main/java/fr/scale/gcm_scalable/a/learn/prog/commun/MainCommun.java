@@ -7,7 +7,7 @@ import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
 import org.objectweb.proactive.core.component.type.PAGCMTypeFactory;
 
-import fr.scale.gcm.scalable.simple.masterslave.ItfRunner;
+import fr.scale.gcm_scalable.a.learn.prog.commun.elements.Runner;
 
 public class MainCommun {
 
@@ -29,7 +29,7 @@ public class MainCommun {
 		System.out.println("Debut test : "+nametest);
 		System.out.println("---------------------");
 
-		ItfRunner i1 = (ItfRunner) composite.getFcInterface("runner");
+		Runner i1 = (Runner) composite.getFcInterface("runner");
 		List<String> li = Arrays.asList(nametest);
 		i1.run(li);
 		Thread.sleep(1000);

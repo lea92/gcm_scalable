@@ -48,5 +48,7 @@
             <interface>org.objectweb.proactive.core.component.componentcontroller.HostComponentSetter</interface>
             <implementation>org.objectweb.proactive.core.component.componentcontroller.HostComponentSetterImpl</implementation>
         </controller>
+        
+        
     </controllers>
 </componentConfiguration>

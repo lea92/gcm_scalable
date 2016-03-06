@@ -2,6 +2,7 @@ package fr.scale.gcm_scalable.a.learn.prog.api.withmape;
 
 import org.objectweb.fractal.api.Component;
 import org.objectweb.fractal.api.NoSuchInterfaceException;
+import org.objectweb.fractal.api.Type;
 import org.objectweb.fractal.api.control.IllegalLifeCycleException;
 import org.objectweb.fractal.api.factory.InstantiationException;
 import org.objectweb.fractal.api.type.ComponentType;
@@ -9,11 +10,16 @@ import org.objectweb.proactive.core.component.Constants;
 import org.objectweb.proactive.core.component.ContentDescription;
 import org.objectweb.proactive.core.component.ControllerDescription;
 import org.objectweb.proactive.core.component.Utils;
+import org.objectweb.proactive.core.component.control.PAGCMLifeCycleController;
+import org.objectweb.proactive.core.component.control.PAMembraneController;
 import org.objectweb.proactive.core.component.factory.PAGenericFactory;
+import org.objectweb.proactive.core.component.identity.PAComponent;
 import org.objectweb.proactive.core.component.type.PAGCMInterfaceType;
 import org.objectweb.proactive.core.component.type.PAGCMTypeFactory;
 import org.objectweb.proactive.core.node.Node;
 import org.objectweb.proactive.extensions.autonomic.controllers.remmos.Remmos;
+import org.objectweb.proactive.extensions.autonomic.controllers.remmos.Remmos.States;
+
 import examples.services.autoadaptable.AASCST;
 import fr.scale.gcm_scalable.a.learn.prog.commun.ASameStructure;
 import fr.scale.gcm_scalable.a.learn.prog.commun.CST;
@@ -172,34 +178,75 @@ public class MapeStructure extends ASameStructure{
 		return slave;
 	}
 
+
+	public boolean deb = true;
 	@Override
-	public void stop(Component composite) {
+	public void start(Component comp) {
 		try {
+			CST.log("start all ");    
+			PAComponent composite = (PAComponent) comp;
+
+			if(deb){//A faire une seule fois
+				Remmos.enableMonitoring(composite);
+				deb= false;
+			}
+			
+			Utils.getPAMembraneController(composite).startMembrane();
+			Type type = composite.getFcType();
+
+			if(composite.getComponentParameters().getHierarchicalType().equals(Constants.COMPOSITE)){
+				for( Component sub : Utils.getPAContentController(composite).getFcSubComponents()){
+					Utils.getPAMembraneController(sub).startMembrane();
+				}
+			}
+			CST.log("start");     
+			Utils.getPAGCMLifeCycleController(composite).startFc();
+		} catch (IllegalLifeCycleException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchInterfaceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+	@Override
+	public void stop(Component comp) {
+		try {
+
+			PAComponent composite = (PAComponent) comp;
+			System.out.println("stopmb");    
+			Utils.getPAMembraneController(composite).stopMembrane();
+			if(composite.getComponentParameters().getHierarchicalType().equals(Constants.COMPOSITE)){
+				for( Component sub : Utils.getPAContentController(composite).getFcSubComponents()){
+					Utils.getPAMembraneController(sub).stopMembrane();
+				}
+			}
+			System.out.println("stop");     
 			Utils.getPAGCMLifeCycleController(composite).stopFc();
 		} catch (IllegalLifeCycleException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NoSuchInterfaceException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
 
 	@Override
-	public void start(Component composite) {
-
+	public void stopstart(Component composite) {
+		stop(composite);
 		try {
+			Thread.sleep(1000);
+		
+		start(composite);
 
-	        CST.log("start membrane");     
-	        Remmos.enableMonitoring(composite); // [!] too much important, maybe merge with MonitoController.startMontioring?
-			
-	        CST.log("start composite");     
-	        
-	        Utils.getPAGCMLifeCycleController(composite).startFc();
-	        
-		} catch (IllegalLifeCycleException e) {
-			e.printStackTrace();
-		} catch (NoSuchInterfaceException e) {
+		Thread.sleep(1000);
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
 
+	}
 }

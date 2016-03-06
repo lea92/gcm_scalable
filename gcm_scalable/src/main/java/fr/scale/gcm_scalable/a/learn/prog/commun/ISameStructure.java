@@ -24,5 +24,15 @@ public interface ISameStructure {
 	public void stop(Component composite);
 
 	public void start(Component composite);
+	
+	public void stopstart(Component composite);
+	
+	public boolean isAPI();
+	
+	public void unbindbindmulticast(Component composite, Component master, Component slave);
+	
+	public void unbindbindsingleton(Component composite, Component master, Component elm2);
+		
+		
 
 }
