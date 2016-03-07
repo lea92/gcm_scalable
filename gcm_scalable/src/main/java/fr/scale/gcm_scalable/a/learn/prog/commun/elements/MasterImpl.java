@@ -56,8 +56,8 @@ public class MasterImpl implements Runner, BindingController {
     
     private fr.scale.gcm_scalable.a.learn.prog.commun.elements.Itf2 i2;
 
-    public void run(List<String> arg) {
-        im1.compute(arg);
+    public List<String> run(List<String> arg) {
+    	return im1.compute(arg);
     }
 
     public void bindFc(String clientItfName, Object serverItf) throws NoSuchInterfaceException,
@@ -101,7 +101,7 @@ public class MasterImpl implements Runner, BindingController {
     }
 
 	@Override
-	public void run2(String arg) {
-		i2.coucou(arg);
+	public String run2(String arg) {
+		return i2.coucou(arg);
 	}
 }

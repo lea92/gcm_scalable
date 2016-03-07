@@ -43,7 +43,8 @@ import java.util.List;
  * @author The ProActive Team
  */
 public interface Runner {
-    public void run(List<String> arg);
+	
+    public List<String> run(List<String> arg);
     
-    public void run2(String str);
+    public String run2(String str);
 }

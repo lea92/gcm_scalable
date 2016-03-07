@@ -45,9 +45,10 @@ import org.objectweb.proactive.api.PAActiveObject;
  * @author The ProActive Team
  */
 public class SlaveImpl implements Itf1 {
-
-    public void compute(List<String> arg) {
+	
+    public String compute(List<String> arg) {
         String str = "\n" + PAActiveObject.getBodyOnThis().getNodeURL() + "Slave: " + this + "\n";
+        str = "";
         str += "arg: ";
         for (int i = 0; i < arg.size(); i++) {
             str += arg.get(i);
@@ -56,6 +57,7 @@ public class SlaveImpl implements Itf1 {
             }
         }
         System.err.println(str);
+        return str;
     }
 
 }

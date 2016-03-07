@@ -43,5 +43,5 @@ import java.util.List;
  * @author The ProActive Team
  */
 public interface ItfMulticast {
-    void compute(List<String> arg);
+	List<String> compute(List<String> arg);
 }

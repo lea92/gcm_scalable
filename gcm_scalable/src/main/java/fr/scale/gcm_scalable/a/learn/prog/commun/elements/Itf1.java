@@ -43,5 +43,5 @@ import java.util.List;
  * @author The ProActive Team
  */
 public interface Itf1 {
-    void compute(List<String> arg);
+    String compute(List<String> arg);
 }
