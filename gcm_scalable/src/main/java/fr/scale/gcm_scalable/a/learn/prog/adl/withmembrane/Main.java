@@ -22,6 +22,7 @@ import org.objectweb.proactive.extra.component.fscript.GCMScript;
 import org.objectweb.proactive.extra.component.fscript.model.GCMNodeFactory;
 
 import fr.scale.gcm_scalable.a.learn.adl.MyFactoryFactory;
+import fr.scale.gcm_scalable.a.learn.prog.adl.nomembrane.NoMembStruct;
 import fr.scale.gcm_scalable.a.learn.prog.commun.CST;
 import fr.scale.gcm_scalable.a.learn.prog.commun.MainCommun;
 
@@ -35,18 +36,11 @@ public class Main extends MainCommun{
 	 * @param args
 	 * @throws Exception
 	 */
-	public static void runwithoutunomic(String[] args) throws Exception {
-		//main1(args);
-		
-		System.out.println("Main with adl with membrane");
-		MembStruct struct = new MembStruct();
-		struct.run();
-	}
-
-	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		try {
-			runwithoutunomic(args);
+		System.out.println("Main with adl no membrane");
+		NoMembStruct struct = new NoMembStruct();
+		struct.run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

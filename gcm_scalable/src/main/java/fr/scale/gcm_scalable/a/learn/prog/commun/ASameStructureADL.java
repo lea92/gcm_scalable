@@ -16,8 +16,14 @@ public abstract class ASameStructureADL extends ASameStructure {
 
 	Component composite, slave1, slave2, master,elm2;
 	protected Factory factory;
-	
 	protected String adl = "fr.scale.gcm_scalable.a.learn.prog.commun.elements.adl.Composite";
+	
+	public ASameStructureADL(){}
+	public ASameStructureADL(String adl){
+		this.adl = adl;
+		init();
+	}
+	
 	
 	public boolean isAPI(){
 		return false;

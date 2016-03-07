@@ -15,68 +15,19 @@ import org.objectweb.proactive.core.component.factory.PAGenericFactory;
 import org.objectweb.proactive.core.component.type.PAGCMTypeFactory;
 
 import fr.scale.gcm_scalable.a.learn.prog.commun.ASameStructure;
+import fr.scale.gcm_scalable.a.learn.prog.commun.ASameStructureADL;
 
-public class MembStruct extends ASameStructure{
+public class MembStruct extends ASameStructureADL{
 
-	Component composite, slave1, slave2, master,elm2;
-	
-	public boolean isAPI(){
-		return false;
-	}
-	
 	public MembStruct(){
-		try {
-			Factory factory = FactoryFactory.getFactory();
-			
-			final String adl = "fr.scale.gcm_scalable.a.learn.prog.commun.elements.adl.Composite";
-			Map<String, Object> context = new HashMap<String, Object>();
-			composite = (Component) factory.newComponent(
-					adl, context);
-		
-		for(Component ca : GCM.getContentController(composite).getFcSubComponents()){
-			String name = GCM.getNameController(ca).getFcName();
-			if(name.equals("Slave")){
-				slave1 = ca;
-			}else if(name.equals("Master")){
-				master = ca;
-			}else if(name.equals("Slave2")){
-				slave2 = ca;
-			}else if(name.equals("Elm2")){
-				elm2 = ca;
-			}
-		};
-		
-		} catch (ADLException e) {
-			e.printStackTrace();
-		} catch (NoSuchInterfaceException e) {
-			e.printStackTrace();
-		}
+		init();
 	}
 	
-	@Override
-	public Component createComposite() {
-		return composite;
+	public MembStruct(String adl){
+		this.adl = adl;
+		init();
 	}
-
-	@Override
-	public Component createMasterMulticast() {
-		return master;
-	}
-
-	@Override
-	public Component createSlave1() {
-		return slave1;
-	}
-
-	@Override
-	public Component createSlave2() {
-		return slave2;
-	}
-
-	@Override
-	public Component createElmt2() {
-		return elm2;
-	}
+	
 
 	@Override
 	public void stop(Component composite) {
@@ -111,6 +62,28 @@ public class MembStruct extends ASameStructure{
 			e.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public Factory getFactory() {
+		try {
+			return  FactoryFactory.getFactory();
+		} catch (ADLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	@Override
+	public Component newComposite(String adl, Map<String, Object> context) {
+		try {
+			return (Component) factory.newComponent(adl, context);
+		} catch (ADLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

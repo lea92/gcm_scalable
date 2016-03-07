@@ -6,6 +6,7 @@ import java.util.Map;
 import org.etsi.uri.gcm.util.GCM;
 import org.objectweb.fractal.adl.Factory;
 import org.objectweb.fractal.api.Component;
+import org.objectweb.proactive.extra.component.fscript.Utils;
 
 import fr.scale.gcm_scalable.a.learn.oleksandra.p.interfaces.*;
 
@@ -23,8 +24,9 @@ public class Main {
 			ic.addSubcomp(0);
 			Thread.sleep(1000);
 			
-			NFInterface nfItf =  (NFInterface)(component.getFcInterface("S1-controller"));
-			nfItf.stopHost();
+			NFInterface nfItf =  (NFInterface) component.getFcInterface("S1-controller");
+			//(NFInterface) Utils.getPAMembraneController(component).nfGetFcSubComponent("P1").getFcInterface("S1");
+			
 			Thread.sleep(1000);
 			nfItf.bindP12();
 			
