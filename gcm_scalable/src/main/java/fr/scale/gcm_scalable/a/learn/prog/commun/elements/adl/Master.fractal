@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE definition PUBLIC "-//objectweb.org//DTD Fractal ADL 2.0//EN" "classpath://org/objectweb/proactive/core/component/adl/xml/proactive.dtd">
+
+<!-- TODO: Write the Job Component definition -->
+<definition name="fr.scale.gcm_scalable.a.learn.prog.commun.elements.adl.Master">
+
+<interface signature="fr.scale.gcm_scalable.a.learn.prog.commun.elements.Runner" role="server" name="runner" />
+<interface signature="fr.scale.gcm_scalable.a.learn.prog.commun.elements.ItfMulticast" role="client" name="i1"  cardinality="multicast"/>
+
+<interface signature="fr.scale.gcm_scalable.a.learn.prog.commun.elements.Itf2" role="client" name="i2"  />
+
+<content class="fr.scale.gcm_scalable.a.learn.prog.commun.elements.MasterImpl"/>
+<controller desc="primitive"/>
+</definition>
